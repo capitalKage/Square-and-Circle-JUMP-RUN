@@ -10,6 +10,16 @@ public class Spawner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Instantiate(obstaclePrefab, this.gameObject.transform.position, obstaclePrefab.transform.rotation);
+        InvokeRepeating("SpawnerObjects", startDelay, repeatRate);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        CancelInvoke();
+    }
+    void SpawnerObjects()
+    {
+        Instantiate(obstaclePrefab, this.gameObject.transform.position, obstaclePrefab.transform.rotation);
+
     }
 }
