@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,9 +9,10 @@ public class PlayerMovement : MonoBehaviour
     private float walkingSpeed = 3.0f, runSpeed = 3.0f, jumpForce = 10f, gravityScale = 5f, distanceToCheck = 1f;
     [SerializeField]
     private bool ground;
+    private float runningEndurance = 10;
     private Rigidbody rb;
     private Vector2 walkingMovement;
-    private Vector2 runningMovement;
+    public Slider slider;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         walkingMovement = new Vector2(Input.GetAxis("Horizontal"), 0f);
+        slider.value = runningEndurance;
 
         if (Input.GetButtonDown("Jump")&& ground) //&& gameOver == false)
         {
@@ -45,10 +48,14 @@ public class PlayerMovement : MonoBehaviour
 
     void characterRunning(Vector2 direction)
     {
-        if(Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))
+        if(Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.LeftShift) && runningEndurance > 0)
         {
             rb.MovePosition((Vector2)transform.position + (direction * walkingSpeed * runSpeed * Time.deltaTime));
-
+            runningEndurance -= 4f * Time.fixedDeltaTime;
+        }
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.LeftShift) && runningEndurance < 10)
+        {
+            runningEndurance += 1 * Time.fixedDeltaTime;
         }
     }
 

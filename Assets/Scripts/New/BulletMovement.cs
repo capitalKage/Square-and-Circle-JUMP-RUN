@@ -16,7 +16,7 @@ public class BulletMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        movement = Vector2.right;
+        movement = Vector2.down;
     }
 
     private void FixedUpdate()
@@ -27,5 +27,13 @@ public class BulletMovement : MonoBehaviour
     void moveCharacter(Vector2 direction)
     {
         rb.velocity = direction * speed;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Ground"))
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
